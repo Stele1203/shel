@@ -1,49 +1,42 @@
 # ./zad3.sh flag tekst
 
-if [ $# -ne 2 ]
+if ! [ $# -eq 2 ]
 then
-    echo Nedovoljno argumenata
+    echo broj argumenata nije 2
     exit 1
 fi
 
-if ! [ "$1" == "-e" ] && ! [ "$1" == "-s" ]
-then
-    echo Trebas unijeti -e ili -s
-    exit 2
-fi
-
+flag=$1
 tekst=$2
 
-if [ "$1" == "-e" ]
+if [ "$flag" == "-e" ]
 then
-
-    for a in *
-    do 
-        bez_ext=${a%.*}
+   for a in *
+    do
         if ! [ "$a" == "zad3.sh" ]
         then
-           mv "$a" "$bez_ext.$tekst"
-        fi        
-        
-
-        echo $bez_ext
+            if ! [ -d $a ]
+            then
+                bez_ext=${a%.*}
+                mv "$a" "$bez_ext.$tekst"
+            fi
+        fi
     done
 fi
 
 
-if [ "$1" == "-s" ]
+if [ "$flag" == "-s" ]
 then
-
-
     for a in *
     do
-        ekstenzija=${a#*.}
-        imefajla=${a%.*}
         if ! [ "$a" == "zad3.sh" ]
         then
-           mv "$a" "$imefajla$tekst.$ekstenzija"
-        fi    
-        
+            if ! [ -d $a ]
+            then
+               bez_ext=${a%.*}
+               ext=${a#*.}
+               mv "$a" "$bez_ext$tekst.$ext"
+            fi
+        fi
     done
-
 fi
